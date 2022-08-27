@@ -11,7 +11,7 @@ Description:    Main execution point of the program
 #include "utils.h"
 
 int main() {
-    for (uint8_t i=0; i<6; ++i) {
+    for (uint8_t i=0; i<5; ++i) {
         printf("Hello, world!\n");
     }
 

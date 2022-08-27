@@ -1,12 +1,13 @@
 CC	= $(GBDK2020)/bin/lcc -Wa-l -Wl-m -Wl-j
 
-BINS	= gb2048.gb
 BIN_DIR	= bin
+SRC_DIR = src
+BINS	= gb2048.gb
 
 all:	$(BINS)
 
 # Compile and link single file in one pass
-%.gb:	%.c
+%.gb:	$(SRC_DIR)/%.c
 	$(CC) -o $(BIN_DIR)/$@ $<
 
 run:	gb2048.gb
