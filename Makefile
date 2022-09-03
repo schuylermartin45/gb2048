@@ -1,18 +1,30 @@
-CC	= $(GBDK2020)/bin/lcc -Wa-l -Wl-m -Wl-j
+CFLAGS	= -Wa-l -Wl-m -Wl-j
+CC	= $(GBDK2020)/bin/lcc $(CFLAGS) 
 
-BIN_DIR	= bin
-SRC_DIR = src
-BINS	= gb2048.gb
+BIN	= bin/
+SRC	= src/
+BINS	= $(BIN)gb2048.gb
 
-all:	$(BINS)
+SRCS	= $(wildcard $(SRC)*.c) 
+OBJS	= $(patsubst %.c,$(BIN)%.o,$(notdir $(SRCS)))
 
-# Compile and link single file in one pass
-%.gb:	$(SRC_DIR)/%.c
-	$(CC) -o $(BIN_DIR)/$@ $<
+all:	$(OBJS) $(BINS)
 
-run:	gb2048.gb
-	java -jar $(EMULICIOUS)/Emulicious.jar $(BIN_DIR)/gb2048.gb
+$(BIN)%.o:	$(SRC)%.c
+	$(CC) -c -o $@ $<
+
+$(BIN)%.s:	$(SRC)%.c
+	$(CC) -S -o $@ $<
+
+$(BIN)%.o:	$(SRC)%.s
+	$(CC) -c -o $@ $<
+
+$(BIN)%.gb: $(OBJS)	
+	$(CC) -o $@ $(OBJS)
+
+run:	all
+	java -jar $(EMULICIOUS)/Emulicious.jar $(BINS)
 
 clean:
-	rm -f $(BIN_DIR)/*
-
+	rm -f $(BIN)*
+ 

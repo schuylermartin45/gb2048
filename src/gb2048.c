@@ -8,12 +8,19 @@ Description:    Main execution point of the program
 #include <stdint.h>
 #include <stdio.h>
 
+#include "render.h"
 #include "utils.h"
 
 int main() {
-    for (uint8_t i=0; i<5; ++i) {
-        printf("Hello, world!\n");
-    }
+    SHOW_BKG;
+    DISPLAY_ON;
+
+    // Initialize the game
+    render_init_grid();
+
+    //for (uint8_t i=0; i<5; ++i) {
+    //    printf("Hello, world!\n");
+    //}
 
     return EXIT_SUCCESS;
 }

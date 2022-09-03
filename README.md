@@ -16,7 +16,7 @@ learn how to develop Gameboy games.
 ## Build instructions
 TODO Make instructions
 
-### Toolchain
+## Toolchain
 This project is utilizing the [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020)
 cross-platform toolkit as its base, on Linux.
 
@@ -35,6 +35,10 @@ emulator, accompanied with the Emulicious VS Code extension.
 environment variable, `EMULICIOUS` is set and points to the directory
 containing `Emulicious.jar`.
 
+### Tile/Sprite Tooling
+I used [Tilemap Studio](https://github.com/Rangi42/tilemap-studio) and [this
+GIMP plugin](https://github.com/bbbbbr/gimp-tilemap-gb/tree/v1.12) to build
+out the graphical components to this project.
 
 ## How to play
 TODO
