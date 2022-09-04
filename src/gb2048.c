@@ -7,20 +7,18 @@ Description:    Main execution point of the program
 #include <gb/gb.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "render.h"
 #include "utils.h"
 
 int main() {
-    SHOW_BKG;
-    DISPLAY_ON;
-
-    // Initialize the game
+    // Initialize the game grid rendering
     render_init_grid();
 
-    //for (uint8_t i=0; i<5; ++i) {
-    //    printf("Hello, world!\n");
-    //}
+    while (true) {
+        wait_vbl_done();
+    }
 
     return EXIT_SUCCESS;
 }
