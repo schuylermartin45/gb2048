@@ -36,9 +36,9 @@ environment variable, `EMULICIOUS` is set and points to the directory
 containing `Emulicious.jar`.
 
 ### Tile/Sprite Tooling
-I used [Tilemap Studio](https://github.com/Rangi42/tilemap-studio) and [this
-GIMP plugin](https://github.com/bbbbbr/gimp-tilemap-gb/tree/v1.12) to build
-out the graphical components to this project.
+I used the new GBDK-2020 releases of the
+[Gameboy Tile Designer & Gameboy Map Builder](https://github.com/gbdk-2020/GBTD_GBMB)
+and ran them using [wine](https://www.winehq.org/).
 
 ## How to play
 TODO
