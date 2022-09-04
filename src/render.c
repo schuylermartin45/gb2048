@@ -14,7 +14,7 @@ Description:    Rendering engine for the game.
 ** Initializes the game grid.
 */
 void render_init_grid() {
-    set_bkg_data(0, 7, tileset_grid);
+    set_bkg_data(0, 8, tileset_grid);
     set_bkg_tiles(0, 0, tilemap_gridWidth, tilemap_gridHeight, tilemap_grid);
 
     // Render data and turn the screen on
