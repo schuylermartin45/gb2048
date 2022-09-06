@@ -26,9 +26,9 @@
 #define __spriteset_tiles_h_INCLUDE
 
 /* Bank of tiles. */
-#define spireset_tilesBank 0
+#define spriteset_tilesBank 0
 /* Start of tile array. */
-extern const unsigned char spireset_tiles[];
+extern const unsigned char spriteset_tiles[];
 
 #endif
 
