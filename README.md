@@ -16,6 +16,20 @@ learn how to develop Gameboy games.
 ## Build instructions
 TODO Make instructions
 
+### Environment Variables
+
+- `SDCCDIR`: Path to the `SDCC` project directory (ends in `/sdcc`)
+- `GBDK2020`: Path to the `GBDK-2020` project directory (ends in `/build/gbdk`)
+- `EMULICIOUS`: Path to `Emulicious` project directory (ends in `/Emulicious`)
+- `GBSDDIR`: Path to an SD card mount point to copy `.gb` files to.
+    - I am currently using an [Everdrive GB x7](https://krikzz.com/our-products/cartridges/edgbx7.html)
+
+### `make` Directives
+- `make`: Builds the project into `bin/gb2048.gb`
+- `make run`: Builds the product and launches it in `Emulicious`
+- `make deploy`: Builds the product and copies the `.gb` file to an SD Card
+- `make clean`: Removes build files in `bin/`
+
 ## Toolchain
 This project is utilizing the [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020)
 cross-platform toolkit as its base, on Linux.

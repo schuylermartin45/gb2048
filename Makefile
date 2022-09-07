@@ -25,6 +25,9 @@ $(BIN)%.gb: $(OBJS)
 run:	all
 	java -jar $(EMULICIOUS)/Emulicious.jar $(BINS)
 
+deploy:	all
+	cp $(BINS) $(GBSDDIR)
+
 clean:
 	rm -f $(BIN)*
  
