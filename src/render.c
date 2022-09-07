@@ -32,6 +32,10 @@ void render_init_grid() {
 ** @param board Game board to render
 */
 void render_init_board(const Board* board) {
+    // Set the sprite mode for elongated sprites. This is a more efficient use
+    // of limited sprite memory for this use case.
+    SPRITES_8x16;
+
     // Load the game sprite tiles in
     set_sprite_data(0, MAX_TILE_SPRITES, spriteset_tiles);
     for (size_t i=0; i<MAX_TILE_SPRITES; ++i) {
@@ -44,16 +48,31 @@ void render_init_board(const Board* board) {
             const TileId tileId = board->grid[r][c];
             if (tileId != NULL_TILE_ID) {
                 const BoardPosition boardPos = { .row=r, .col=c };
-                Position pos;
-                grid_tile_calc_xy_pos(&boardPos, &pos);
-                move_sprite(
-                    tileId - 1,
-                    pos.x,
-                    pos.y
-                );
+                render_grid_tile(tileId, &boardPos);
             }
         }
     }
 
     SHOW_SPRITES;
+}
+
+/*
+** Renders a single grid tile
+** @param tileId    Tile to render
+** @param boardPos  Board position to render the tile at
+*/
+void render_grid_tile(const TileId tileId, const BoardPosition* boardPos) {
+    Position pos;
+    grid_tile_calc_xy_pos(boardPos, &pos);
+    const uint8_t tileIdx = grid_tile_calc_sprite_idx(tileId);
+    move_sprite(
+        tileIdx,
+        pos.x,
+        pos.y
+    );
+    move_sprite(
+        tileIdx + 1,
+        pos.x + SPRITE_WIDTH,
+        pos.y
+    );
 }

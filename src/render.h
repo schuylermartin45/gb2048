@@ -20,4 +20,7 @@ void render_init_grid();
 /// Initializes the game board sprites
 void render_init_board(const Board* board);
 
+/// Renders a single grid tile
+void render_grid_tile(const TileId tileId, const BoardPosition* boardPos);
+
 #endif
