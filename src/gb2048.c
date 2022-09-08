@@ -18,8 +18,9 @@ int main() {
     Board board;
     board_init(&board);
 
-    // Initialize the game grid rendering
-    render_init_grid();
+    // Initialize the game rendering
+    // TODO: Fix grid current tile map is crap
+    //render_init_grid();
     render_init_board(&board);
 
     while (true) {

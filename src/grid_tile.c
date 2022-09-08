@@ -12,8 +12,8 @@ Description:    Represents a tile object on the grid
 */
 void grid_tile_calc_xy_pos(const BoardPosition* boardPos, Position* pos) {
     // TODO fix math
-    pos->x = (boardPos->col * (SPRITE_WIDTH + 16)) + (GRID_START_X * 2);
-    pos->y = (boardPos->row * (SPRITE_HEIGHT + 16)) + GRID_START_Y;
+    pos->x = (boardPos->col * (SPRITE_WIDTH + TILE_PAD_X)) + GRID_START_X;
+    pos->y = (boardPos->row * (SPRITE_HEIGHT + TILE_PAD_Y)) + GRID_START_Y;
 }
 
 /*

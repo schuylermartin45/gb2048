@@ -40,7 +40,7 @@ void render_init_board(const Board* board) {
 
     // Load the game sprite tiles in
     set_sprite_data(0, MAX_SPRITE_TILES, spriteset_tiles);
-    for (size_t i=0; i<MAX_TILE_ID; ++i) {
+    for (size_t i=0; i<MAX_SPRITE_PAIRS; ++i) {
         set_sprite_tile(i, i * 2);
     }
 
@@ -68,8 +68,6 @@ void render_grid_tile(const TileId tileId, const BoardPosition* boardPos) {
     grid_tile_calc_xy_pos(boardPos, &pos);
     SpriteId spriteId;
     grid_tile_calc_sprite_idx(tileId, &spriteId);
-    // TODO rm
-    //printf("tileIdx: %d|%d\n", spriteId.left, spriteId.right);
     // As the "null tile" is reserved and tileIds are equivalents to powers
     // of two, the left sprite ID is 1 less than the tile ID.
     move_sprite(spriteId.left, pos.x, pos.y);
