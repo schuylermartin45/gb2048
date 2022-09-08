@@ -5,6 +5,9 @@ Author:         Schuyler Martin <schuylermartin45@github>
 Description:    Represents the current game board.
 */
 
+#include <gb/hardware.h>
+#include <rand.h>
+#include <stdio.h>
 #include <stddef.h>
 
 #include "board.h"
@@ -14,6 +17,16 @@ Description:    Represents the current game board.
 ** @param board Board to initialize
 */
 void board_init(Board* board) {
+    // TODO use the RTC? I can't remember what Pokemon uses
+    const uint16_t seed = (uint16_t)DIV_REG << 8;
+    initarand(seed);
+
+    // TODO rm, this is just a test
+    for (size_t i=0; i<5; ++i) {
+        const uint8_t ranNum = rand();
+        printf("Ran: %d\n", ranNum);
+    }
+
     board->score = 0;
     // TODO fill with random IDs
     for (size_t r=0; r<BOARD_SIZE; ++r) {
