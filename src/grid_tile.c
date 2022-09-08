@@ -23,5 +23,5 @@ void grid_tile_calc_xy_pos(const BoardPosition* boardPos, Position* pos) {
 */
 void grid_tile_calc_sprite_idx(const TileId tileId, SpriteId* spriteId) {
     spriteId->left = (tileId - 1) * 2;
-    spriteId->right = spriteId->right + 1;
+    spriteId->right = spriteId->left + 1;
 }

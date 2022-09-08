@@ -9,5 +9,6 @@
 *.gb
 *.map
 *.noi
+*.code-workspace
 img/gimp_project_files
 img/tilemap_project_files
