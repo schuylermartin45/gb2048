@@ -12,15 +12,16 @@ Description:    Represents a tile object on the grid
 */
 void grid_tile_calc_xy_pos(const BoardPosition* boardPos, Position* pos) {
     // TODO fix math
-    pos->x = (boardPos->row * SPRITE_WIDTH) + GRID_START_X;
-    pos->y = (boardPos->col * SPRITE_HEIGHT) + GRID_START_Y;
+    pos->x = (boardPos->col * (SPRITE_WIDTH + 16)) + (GRID_START_X * 2);
+    pos->y = (boardPos->row * (SPRITE_HEIGHT + 16)) + GRID_START_Y;
 }
 
 /*
 ** Calculate the index of the leading sprite 
 ** @param tileId    ID/value of the tile
-** @return Index of the left-hand sprite
+** @param Sprite index of the two sprites that make up a grid-tile
 */
-uint8_t grid_tile_calc_sprite_idx(const TileId tileId) {
-    return (tileId - 1) * 2;
+void grid_tile_calc_sprite_idx(const TileId tileId, SpriteId* spriteId) {
+    spriteId->left = (tileId - 1) * 2;
+    spriteId->right = spriteId->right + 1;
 }

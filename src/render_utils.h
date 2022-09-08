@@ -15,7 +15,7 @@ Description:    Rendering engine primatives and utilities. Breaks dependency cyc
 #define SPRITE_HEIGHT   16
 // TODO fix locations
 #define GRID_START_X    8
-#define GRID_START_Y    64
+#define GRID_START_Y    44
 
 /***** Types *****/
 

@@ -6,8 +6,10 @@ Description:    Rendering engine for the game.
 */
 
 #include <gb/gb.h>
+#include <stdio.h>
 #include <stddef.h>
 
+#include "board.h"
 #include "render.h"
 #include "render_utils.h"
 
@@ -37,9 +39,9 @@ void render_init_board(const Board* board) {
     SPRITES_8x16;
 
     // Load the game sprite tiles in
-    set_sprite_data(0, MAX_TILE_SPRITES, spriteset_tiles);
-    for (size_t i=0; i<MAX_TILE_SPRITES; ++i) {
-        set_sprite_tile(i, i);
+    set_sprite_data(0, MAX_SPRITE_TILES, spriteset_tiles);
+    for (size_t i=0; i<MAX_TILE_ID; ++i) {
+        set_sprite_tile(i, i * 2);
     }
 
     // Render the initial sprite data
@@ -64,15 +66,12 @@ void render_init_board(const Board* board) {
 void render_grid_tile(const TileId tileId, const BoardPosition* boardPos) {
     Position pos;
     grid_tile_calc_xy_pos(boardPos, &pos);
-    const uint8_t tileIdx = grid_tile_calc_sprite_idx(tileId);
-    move_sprite(
-        tileIdx,
-        pos.x,
-        pos.y
-    );
-    move_sprite(
-        tileIdx + 1,
-        pos.x + SPRITE_WIDTH,
-        pos.y
-    );
+    SpriteId spriteId;
+    grid_tile_calc_sprite_idx(tileId, &spriteId);
+    // TODO rm
+    //printf("tileIdx: %d|%d\n", spriteId.left, spriteId.right);
+    // As the "null tile" is reserved and tileIds are equivalents to powers
+    // of two, the left sprite ID is 1 less than the tile ID.
+    move_sprite(spriteId.left, pos.x, pos.y);
+    move_sprite(spriteId.right, pos.x + SPRITE_WIDTH, pos.y);
 }

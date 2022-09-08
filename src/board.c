@@ -23,5 +23,15 @@ void board_init(Board* board) {
     }
     // TODO rm hard-coding
     board->grid[0][0] = 1;
-    board->grid[1][1] = 12;
+    board->grid[0][1] = 2;
+    board->grid[0][2] = 3;
+    board->grid[0][3] = 4;
+    board->grid[1][0] = 5;
+    board->grid[1][1] = 6;
+    board->grid[1][2] = 7;
+    board->grid[1][3] = 8;
+    board->grid[2][0] = 9;
+    board->grid[2][1] = 10;
+    board->grid[2][2] = 11;
+    board->grid[2][3] = 12;
 }

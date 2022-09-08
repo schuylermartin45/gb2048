@@ -10,7 +10,8 @@ Description:    Rendering engine for the game.
 #include "board.h"
 
 /***** Constants *****/
-#define MAX_TILE_SPRITES    (MAX_TILE_ID * 2)
+/// 4 Tiles make up a grid-tile sprite
+#define MAX_SPRITE_TILES    (MAX_TILE_ID * 4)
 
 /***** Functions *****/
 
