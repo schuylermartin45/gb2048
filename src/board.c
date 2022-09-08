@@ -26,9 +26,9 @@ void board_init(Board* board) {
     board->grid[0][1] = 2;
     board->grid[0][2] = 3;
     board->grid[0][3] = 4;
-    board->grid[1][0] = 5;
-    board->grid[1][1] = 6;
-    board->grid[1][2] = 7;
+    board->grid[1][0] = 1;
+    board->grid[1][1] = 2;
+    board->grid[1][2] = 0;
     board->grid[1][3] = 8;
     board->grid[2][0] = 9;
     board->grid[2][1] = 10;

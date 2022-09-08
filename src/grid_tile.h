@@ -22,7 +22,7 @@ Description:    Represents a tile object on the grid
 /// to index sprites.
 typedef uint8_t TileId;
 
-/// Identifies a grid tile by a left and a right 8x16 sprite.
+/// Identifies a sprite/data tile by a left and a right 8x16 meta-sprite.
 typedef struct {
     uint8_t left;
     uint8_t right;

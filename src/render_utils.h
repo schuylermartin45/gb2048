@@ -11,12 +11,19 @@ Description:    Rendering engine primatives and utilities. Breaks dependency cyc
 
 /***** Constants *****/
 
+// Sprite dimenions in 8x16 mode
 #define SPRITE_WIDTH    8
 #define SPRITE_HEIGHT   16
+// Padding between grid-tiles
 #define TILE_PAD_X      16
 #define TILE_PAD_Y      16
+// Starting position for the upper-left-most grid tile
 #define GRID_START_X    44
 #define GRID_START_Y    48
+// Invalid sprite positions that remove sprites from the viewport
+// According to the docs, setting the Y out of bounds is preferred.
+#define HIDE_SPRITE_X   0
+#define HIDE_SPRITE_Y   0
 
 /***** Types *****/
 
