@@ -22,6 +22,7 @@ void board_generate_tile(Board* board) {
     // Decide if we are dropping a 2 or a 4, biased towards 2 (roughly 88% of
     // the time...Great Scott!)
     const TileId tileId = (rand() < 225) ? 1 : 2;
+    // TODO: this will lock up on a full board.
     while (true) {
         const uint8_t row = rand() % BOARD_SIZE;
         const uint8_t col = rand() % BOARD_SIZE;
@@ -88,15 +89,41 @@ void board_shift(Board* board, const BoardDirection direction) {
     // Reduce duplicated code by iterating for 3 rows or columns
     for (size_t i=1; i<BOARD_SIZE; ++i) {
         switch (direction) {
-            case BOARD_UP:
+            case BOARD_UP: {
+                for (size_t r=1; r<BOARD_SIZE; ++r) {
+                    for (size_t c=0; c<BOARD_SIZE; ++c) {
+                        cur.row=r;  cur.col=c;
+                        next.row=r-1; next.col=c;
+                        board_calc_move(board, &cur, &next);
+                    }
+                }
                 break;
-            case BOARD_DOWN:
+            }
+            case BOARD_DOWN: {
+                for (int8_t r=BOARD_SIZE-2; r>=0; --r) {
+                    for (size_t c=0; c<BOARD_SIZE; ++c) {
+                        cur.row=r;  cur.col=c;
+                        next.row=r+1; next.col=c;
+                        board_calc_move(board, &cur, &next);
+                    }
+                }
                 break;
-            case BOARD_LEFT:
+            }
+            case BOARD_LEFT: {
+                for (size_t r=0; r<BOARD_SIZE; ++r) {
+                    for (size_t c=1; c<BOARD_SIZE; ++c) {
+                        cur.row=r;  cur.col=c;
+                        next.row=r; next.col=c-1;
+                        board_calc_move(board, &cur, &next);
+                    }
+                }
                 break;
+            }
             case BOARD_RIGHT: {
                 for (size_t r=0; r<BOARD_SIZE; ++r) {
-                    for (size_t c=BOARD_SIZE-2; c>=0; --c) {
+                    // Canonically using `size_t` here will not work, so we will
+                    // use a counter that can go slightly negative.
+                    for (int8_t c=BOARD_SIZE-2; c>=0; --c) {
                         cur.row=r;  cur.col=c;
                         next.row=r; next.col=c+1;
                         board_calc_move(board, &cur, &next);
@@ -108,5 +135,7 @@ void board_shift(Board* board, const BoardDirection direction) {
     }
 
     // Add a new tile now that the shift is complete.
+    // TODO tile only get added when there is at least 1
+    // consolidation.
     board_generate_tile(board);
 }
