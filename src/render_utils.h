@@ -16,7 +16,7 @@ Description:    Rendering engine primatives and utilities. Breaks dependency cyc
 #define SPRITE_HEIGHT   16
 // Padding between grid-tiles
 #define TILE_PAD_X      16
-#define TILE_PAD_Y      16
+#define TILE_PAD_Y      8
 // Starting position for the upper-left-most grid tile
 #define GRID_START_X    44
 #define GRID_START_Y    48

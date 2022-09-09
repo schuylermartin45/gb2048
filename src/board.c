@@ -5,46 +5,47 @@ Author:         Schuyler Martin <schuylermartin45@github>
 Description:    Represents the current game board.
 */
 
+#include <gb/gb.h>
 #include <gb/hardware.h>
 #include <rand.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 #include "board.h"
+
+/*
+** Generate a new tile on the board.
+** @param board Board to modify
+*/
+void board_generate_tile(Board* board) {
+    // Decide if we are dropping a 2 or a 4, biased towards 2 (roughly 88% of
+    // the time...Great Scott!)
+    const TileId tileId = (rand() < 225) ? 1 : 2;
+    while (true) {
+        const uint8_t row = rand() % BOARD_SIZE;
+        const uint8_t col = rand() % BOARD_SIZE;
+        if (board->grid[row][col] == NULL_TILE_ID) {
+            board->grid[row][col] = tileId;
+            return;
+        }
+    }
+}
 
 /*
 ** Initializes a board
 ** @param board Board to initialize
 */
 void board_init(Board* board) {
-    // TODO use the RTC? I can't remember what Pokemon uses
-    const uint16_t seed = (uint16_t)DIV_REG << 8;
-    initarand(seed);
-
-    // TODO rm, this is just a test
-    for (size_t i=0; i<5; ++i) {
-        const uint8_t ranNum = rand();
-        printf("Ran: %d\n", ranNum);
-    }
-
+    // Initialize the board to 0
     board->score = 0;
-    // TODO fill with random IDs
     for (size_t r=0; r<BOARD_SIZE; ++r) {
         for (size_t c=0; c<BOARD_SIZE; ++c) {
             board->grid[r][c] = 0;
         }
     }
-    // TODO rm hard-coding
-    board->grid[0][0] = 1;
-    board->grid[0][1] = 2;
-    board->grid[0][2] = 3;
-    board->grid[0][3] = 4;
-    board->grid[1][0] = 1;
-    board->grid[1][1] = 2;
-    board->grid[1][2] = 0;
-    board->grid[1][3] = 8;
-    board->grid[2][0] = 9;
-    board->grid[2][1] = 10;
-    board->grid[2][2] = 11;
-    board->grid[2][3] = 12;
+    
+    // Two tiles are generated at random at the start.
+    board_generate_tile(board);
+    board_generate_tile(board);
 }

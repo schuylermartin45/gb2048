@@ -27,4 +27,7 @@ typedef struct {
 /// Initializes a board
 void board_init(Board* board);
 
+/// Generate a new tile on the board.
+void board_generate_tile(Board* board);
+
 #endif
