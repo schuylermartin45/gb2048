@@ -37,6 +37,20 @@ int main() {
     render_init_board(&board);
 
     while (true) {
+        // Remap keys to directional enum
+        BoardDirection direction = BOARD_NONE;
+        // TODO: might make more sense to use `waitpad()` instead?
+        uint8_t buttons = joypad();
+        if      (buttons & J_UP)    direction = BOARD_UP;
+        else if (buttons & J_DOWN)  direction = BOARD_DOWN;
+        else if (buttons & J_LEFT)  direction = BOARD_LEFT;
+        else if (buttons & J_RIGHT) direction = BOARD_RIGHT;
+
+        if (direction != BOARD_NONE) {
+            board_shift(&board, direction);
+            render_board(&board);
+        }
+        
         wait_vbl_done();
     }
 

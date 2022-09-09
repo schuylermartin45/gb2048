@@ -24,10 +24,21 @@ typedef struct {
     TileId grid[BOARD_SIZE][BOARD_SIZE];
 } Board;
 
+typedef enum {
+    BOARD_NONE,
+    BOARD_UP,
+    BOARD_DOWN,
+    BOARD_LEFT,
+    BOARD_RIGHT,
+} BoardDirection;
+
 /// Initializes a board
 void board_init(Board* board);
 
 /// Generate a new tile on the board.
 void board_generate_tile(Board* board);
+
+/// Shift a board in a direction
+void board_shift(Board* board, const BoardDirection direction);
 
 #endif
