@@ -16,11 +16,19 @@ Description:    Represents the current game board.
 #define MAX_TILE_ID 12
 #define BOARD_SIZE  4
 
+// Macros used for board availability checks
+#define ROW_4_BIT_MASK          0xF0
+#define COL_4_BIT_MASK          0x0F
+#define TILE_USED_TERMINATOR    0xFF
+
 /***** Types *****/
+
+/// Scoring will store a small number to then display a much bigger number.
+typedef uint8_t Score;
 
 /// Stores data associated with the current game
 typedef struct {
-    uint8_t score;
+    Score score;
     TileId grid[BOARD_SIZE][BOARD_SIZE];
 } Board;
 

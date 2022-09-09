@@ -22,15 +22,27 @@ void board_generate_tile(Board* board) {
     // Decide if we are dropping a 2 or a 4, biased towards 2 (roughly 88% of
     // the time...Great Scott!)
     const TileId tileId = (rand() < 225) ? 1 : 2;
-    // TODO: this will lock up on a full board.
-    while (true) {
-        const uint8_t row = rand() % BOARD_SIZE;
-        const uint8_t col = rand() % BOARD_SIZE;
-        if (board->grid[row][col] == NULL_TILE_ID) {
-            board->grid[row][col] = tileId;
-            return;
+
+    // Scan for all available spots, storing the row value in the upper 4 bits
+    // and the column in the lower 4 bits.
+    uint8_t available[BOARD_SIZE * BOARD_SIZE] = { TILE_USED_TERMINATOR };
+    size_t available_idx = 0;
+    for (size_t r=0; r<BOARD_SIZE; ++r) {
+        for (size_t c=0; c<BOARD_SIZE; ++c) {
+            if (board->grid[r][c] == NULL_TILE_ID) {
+                available[available_idx++] = r << 4 | c;
+            }
         }
     }
+
+    // No tile can be added, break early
+    if (available_idx == 0) {
+        return;
+    }
+
+    // Randomly pick an available position, then decode the row and column
+    const uint8_t encoded_rc = available[rand() % available_idx];
+    board->grid[encoded_rc >> 4][encoded_rc & COL_4_BIT_MASK] = tileId;
 }
 
 /*
@@ -83,6 +95,7 @@ void board_calc_move(Board* board, const BoardPosition* cur, const BoardPosition
 ** @param direction Direction to shift in (can't be BOARD_NONE)
 */
 void board_shift(Board* board, const BoardDirection direction) {
+    const Score init_score = board->score;
     // Reserve scratch space for board position information.
     BoardPosition cur;
     BoardPosition next;
@@ -134,8 +147,14 @@ void board_shift(Board* board, const BoardDirection direction) {
         }
     }
 
-    // Add a new tile now that the shift is complete.
-    // TODO tile only get added when there is at least 1
-    // consolidation.
+    // TODO add sound when tiles have been combined.
+    if (init_score != board->score) {
+    }
+
+    // TODO fix
+    // Add a new tile now that the shift is complete. Do not add a tile in the
+    // case where no new moves are possible in that direction (in other words,
+    // tiles can't be combined and all current tiles can't move in the requested
+    // direction)
     board_generate_tile(board);
 }
