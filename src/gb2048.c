@@ -25,16 +25,27 @@ Description:    Main execution point of the program
 /***** Functions *****/
 
 /*
+** Blocks on a single button press (held then released)
+** @param mask  Button mask to wait on
+** @return Button(s) that were pressed
+*/
+uint8_t wait_on_button_pressed(const uint8_t mask) {
+    const uint8_t button = waitpad(mask);
+    waitpadup();
+    return button;
+}
+
+/*
 ** Main entry point to the program
 ** @return Exit code...for historical reasons and to be "proper"
 */
 int main() {
     // TODO make splash screen
-    printf("\n\n\n\n    Press start!\n");
+    printf("\n\n\n\n\n\n\n\n    Press start!\n");
 
     // Wait for the start-screen, then abuse the scanline register and seed
     // with a value derived by the current scan line value.
-    waitpad(J_START);
+    wait_on_button_pressed(J_START);
     const uint16_t seed = LY_REG | (uint16_t)DIV_REG << 8;
     initarand(seed);
     cls();
@@ -52,7 +63,7 @@ int main() {
         // Remap keys to directional enum
         BoardDirection direction = BOARD_NONE;
         
-        const uint8_t buttons = joypad();
+        const uint8_t buttons = wait_on_button_pressed(J_UP|J_DOWN|J_LEFT|J_RIGHT|J_START); //joypad();
         if      (buttons & J_UP)    direction = BOARD_UP;
         else if (buttons & J_DOWN)  direction = BOARD_DOWN;
         else if (buttons & J_LEFT)  direction = BOARD_LEFT;
@@ -60,16 +71,14 @@ int main() {
         else if (buttons & J_START) {
             // TODO make a better pause menu        
             printf("\n\n\n\n\n\n\n\n     | Paused |\n");
-            delay(USER_INPUT_DELAY);
-            waitpad(J_START);
-            delay(USER_INPUT_DELAY);
+            // First wait (for any button) starts "pause mode". This second wait
+            // keeps the pause menu open.
+            wait_on_button_pressed(J_START);
             cls();
             continue;
         }
 
         if (direction != BOARD_NONE) {
-            // Only delay if user input has been detected.
-            delay(USER_INPUT_DELAY);
             board_shift(&board, direction);
             render_board(&board);
         }
