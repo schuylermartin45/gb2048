@@ -73,7 +73,7 @@ void board_init(Board* board) {
 ** @param is_noop Sets to false if an "action" occurred in this direction. Used
 **                to detect "no-ops" in player actions.
 */
-void board_calc_move(
+void _board_calc_move(
     Board* board,
     const BoardPosition* cur,
     const BoardPosition* next,
@@ -117,7 +117,7 @@ void board_shift(Board* board, const BoardDirection direction) {
                     for (size_t c=0; c<BOARD_SIZE; ++c) {
                         cur.row=r;  cur.col=c;
                         next.row=r-1; next.col=c;
-                        board_calc_move(board, &cur, &next, &is_noop);
+                        _board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
@@ -129,7 +129,7 @@ void board_shift(Board* board, const BoardDirection direction) {
                     for (size_t c=0; c<BOARD_SIZE; ++c) {
                         cur.row=r;  cur.col=c;
                         next.row=r+1; next.col=c;
-                        board_calc_move(board, &cur, &next, &is_noop);
+                        _board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
@@ -139,7 +139,7 @@ void board_shift(Board* board, const BoardDirection direction) {
                     for (size_t c=1; c<BOARD_SIZE; ++c) {
                         cur.row=r;  cur.col=c;
                         next.row=r; next.col=c-1;
-                        board_calc_move(board, &cur, &next, &is_noop);
+                        _board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
@@ -149,7 +149,7 @@ void board_shift(Board* board, const BoardDirection direction) {
                     for (int8_t c=BOARD_SIZE-2; c>=0; --c) {
                         cur.row=r;  cur.col=c;
                         next.row=r; next.col=c+1;
-                        board_calc_move(board, &cur, &next, &is_noop);
+                        _board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;

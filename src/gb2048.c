@@ -40,15 +40,18 @@ uint8_t wait_on_button_pressed(const uint8_t mask) {
 ** @return Exit code...for historical reasons and to be "proper"
 */
 int main() {
-    // TODO make splash screen
-    printf("\n\n\n\n\n\n\n\n    Press start!\n");
+    // Initialize font data first so we have it at the ready.
+    render_init_font();
 
+    // TODO make a better splash screen
+    render_window_show(false);
+    render_str_relative(REL_POS_1, REL_POS_1, "Press start!");
     // Wait for the start-screen, then abuse the scanline register and seed
     // with a value derived by the current scan line value.
     wait_on_button_pressed(J_START);
+    render_window_hide();
     const uint16_t seed = LY_REG | (uint16_t)DIV_REG << 8;
     initarand(seed);
-    cls();
 
     // Initialize game state
     Board board;
@@ -69,12 +72,13 @@ int main() {
         else if (buttons & J_LEFT)  direction = BOARD_LEFT;
         else if (buttons & J_RIGHT) direction = BOARD_RIGHT;
         else if (buttons & J_START) {
-            // TODO make a better pause menu        
-            printf("\n\n\n\n\n\n\n\n     | Paused |\n");
+            // TODO make a better pause menu
+            render_window_show(true);
+            render_str_relative(REL_POS_1, REL_POS_1, "Paused");
             // First wait (for any button) starts "pause mode". This second wait
             // keeps the pause menu open.
             wait_on_button_pressed(J_START);
-            cls();
+            render_window_hide();
             continue;
         }
 

@@ -14,7 +14,9 @@ I am not the creator of 2048, I am simple using it as a starting point to
 learn how to develop Gameboy games.
 
 ## Build instructions
-TODO Make instructions
+To build the project and use all `make` directives, ensure that the
+following environment variables are set. These specify the paths to
+the `make` directive dependencies.
 
 ### Environment Variables
 
