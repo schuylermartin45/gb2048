@@ -16,6 +16,18 @@ Description:    Main execution point of the program
 #include "render.h"
 #include "utils.h"
 
+/***** Constants *****/
+
+/// Slows down the primary gameplay loop
+#define USER_INPUT_DELAY    50
+
+
+/***** Functions *****/
+
+/*
+** Main entry point to the program
+** @return Exit code...for historical reasons and to be "proper"
+*/
 int main() {
     // TODO make splash screen
     printf("\n\n\n\n    Press start!\n");
@@ -39,19 +51,22 @@ int main() {
     while (true) {
         // Remap keys to directional enum
         BoardDirection direction = BOARD_NONE;
-        // TODO: might make more sense to use `waitpad()` instead?
-        const uint8_t buttons = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_START);
+        
+        const uint8_t buttons = joypad();
         if      (buttons & J_UP)    direction = BOARD_UP;
         else if (buttons & J_DOWN)  direction = BOARD_DOWN;
         else if (buttons & J_LEFT)  direction = BOARD_LEFT;
         else if (buttons & J_RIGHT) direction = BOARD_RIGHT;
         else if (buttons & J_START) {
             // TODO make a better pause menu        
-            printf("\n\n\n\n   | Paused |\n");
+            printf("\n\n\n\n\n\n\n\n     | Paused |\n");
+            delay(USER_INPUT_DELAY);
             waitpad(J_START);
+            delay(USER_INPUT_DELAY);
             cls();
             continue;
         }
+        delay(USER_INPUT_DELAY);
 
         if (direction != BOARD_NONE) {
             board_shift(&board, direction);
