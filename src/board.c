@@ -70,14 +70,22 @@ void board_init(Board* board) {
 ** @param cur     Current board position being examined
 ** @param next    Next board position in the direction of the move. This is
 **                the position that is being accumulated into.
+** @param is_noop Sets to false if an "action" occurred in this direction. Used
+**                to detect "no-ops" in player actions.
 */
-void board_calc_move(Board* board, const BoardPosition* cur, const BoardPosition* next) {
+void board_calc_move(
+    Board* board,
+    const BoardPosition* cur,
+    const BoardPosition* next,
+    bool* is_noop
+) {
 	const TileId cur_val    = board->grid[cur->row][cur->col];
 	const TileId next_val   = board->grid[next->row][next->col];
 	// If the other value is 0, move the current value in
 	if (board->grid[next->row][next->col] == NULL_TILE_ID) {
 		board->grid[next->row][next->col] = cur_val;
 		board->grid[cur->row][cur->col] = NULL_TILE_ID;
+        *is_noop = false;
 	}
     else if (cur_val == next_val) {
 		// If the values are equal, accumulate
@@ -86,6 +94,7 @@ void board_calc_move(Board* board, const BoardPosition* cur, const BoardPosition
 		// Score increments with the value accumulated
         // TODO probs need to adjust with powers of 2 simplification
 		board->score += next_val;
+        *is_noop = false;
 	}
 }
 
@@ -99,6 +108,7 @@ void board_shift(Board* board, const BoardDirection direction) {
     // Reserve scratch space for board position information.
     BoardPosition cur;
     BoardPosition next;
+    bool is_noop = true;
     // Reduce duplicated code by iterating for 3 rows or columns
     for (size_t i=1; i<BOARD_SIZE; ++i) {
         switch (direction) {
@@ -107,17 +117,19 @@ void board_shift(Board* board, const BoardDirection direction) {
                     for (size_t c=0; c<BOARD_SIZE; ++c) {
                         cur.row=r;  cur.col=c;
                         next.row=r-1; next.col=c;
-                        board_calc_move(board, &cur, &next);
+                        board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
             }
             case BOARD_DOWN: {
+                // Canonically using `size_t` here will not work, so we will
+                // use a counter that can go slightly negative.
                 for (int8_t r=BOARD_SIZE-2; r>=0; --r) {
                     for (size_t c=0; c<BOARD_SIZE; ++c) {
                         cur.row=r;  cur.col=c;
                         next.row=r+1; next.col=c;
-                        board_calc_move(board, &cur, &next);
+                        board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
@@ -127,19 +139,17 @@ void board_shift(Board* board, const BoardDirection direction) {
                     for (size_t c=1; c<BOARD_SIZE; ++c) {
                         cur.row=r;  cur.col=c;
                         next.row=r; next.col=c-1;
-                        board_calc_move(board, &cur, &next);
+                        board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
             }
             case BOARD_RIGHT: {
                 for (size_t r=0; r<BOARD_SIZE; ++r) {
-                    // Canonically using `size_t` here will not work, so we will
-                    // use a counter that can go slightly negative.
                     for (int8_t c=BOARD_SIZE-2; c>=0; --c) {
                         cur.row=r;  cur.col=c;
                         next.row=r; next.col=c+1;
-                        board_calc_move(board, &cur, &next);
+                        board_calc_move(board, &cur, &next, &is_noop);
                     }
                 }
                 break;
@@ -151,10 +161,13 @@ void board_shift(Board* board, const BoardDirection direction) {
     if (init_score != board->score) {
     }
 
-    // TODO fix
-    // Add a new tile now that the shift is complete. Do not add a tile in the
-    // case where no new moves are possible in that direction (in other words,
-    // tiles can't be combined and all current tiles can't move in the requested
-    // direction)
-    board_generate_tile(board);
+    // Add a new tile now that the shift is complete and direction made a valid
+    // "change" (i.e. the player action wasn't a "no-op").
+    //
+    // In other words: tiles are not added in the case where no new moves are
+    // possible in that direction (tiles can't be combined and all current tiles
+    // can't move in the requested direction)
+    if (!is_noop) {
+        board_generate_tile(board);
+    }
 }
