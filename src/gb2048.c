@@ -19,7 +19,7 @@ Description:    Main execution point of the program
 /***** Constants *****/
 
 /// Slows down the primary gameplay loop
-#define USER_INPUT_DELAY    50
+#define USER_INPUT_DELAY    100
 
 
 /***** Functions *****/
@@ -66,9 +66,10 @@ int main() {
             cls();
             continue;
         }
-        delay(USER_INPUT_DELAY);
 
         if (direction != BOARD_NONE) {
+            // Only delay if user input has been detected.
+            delay(USER_INPUT_DELAY);
             board_shift(&board, direction);
             render_board(&board);
         }
