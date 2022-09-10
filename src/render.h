@@ -59,7 +59,11 @@ void render_init_grid();
 void render_init_board(const Board* board);
 
 /// Renders a single grid tile
-void render_grid_tile(const TileId tileId, const size_t spriteIdx, const BoardPosition* boardPos);
+void render_grid_tile(
+    const TileId tile_id,
+    const size_t sprite_idx,
+    const BoardPosition* board_pos
+);
 /// Renders a board
 void render_board(const Board* board);
 

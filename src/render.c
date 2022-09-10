@@ -85,38 +85,42 @@ void render_init_board(const Board* board) {
 
 /*
 ** Renders a single grid tile
-** @param tileId    Tile to render
-** @param spriteIdx Starting (left) sprite index
-** @param boardPos  Board position to render the tile at
+** @param tile_id       Tile to render
+** @param sprite_idx    Starting (left) sprite index
+** @param board_pos     Board position to render the tile at
 */
-void render_grid_tile(const TileId tileId, const size_t spriteIdx, const BoardPosition* boardPos) {
-    SpriteId spriteId;
-    grid_tile_calc_sprite_idx(tileId, &spriteId);
+void render_grid_tile(
+    const TileId tile_id,
+    const size_t sprite_idx,
+    const BoardPosition* board_pos
+) {
+    SpriteId sprite_id;
+    grid_tile_calc_sprite_idx(tile_id, &sprite_id);
 
     // There doesn't appear to be a way to hide sprites other than to move them
     // off the viewport. Upon next time the sprite gets a value, it will move to
     // the correct position and set to the correct sprite data.
-    if (tileId == NULL_TILE_ID) {
-        move_sprite(spriteIdx, 0, 0);
-        move_sprite(spriteIdx + 1, 0, 0);
+    if (tile_id == NULL_TILE_ID) {
+        move_sprite(sprite_idx, 0, 0);
+        move_sprite(sprite_idx + 1, 0, 0);
         return;
     }
 
     Position pos;
-    grid_tile_calc_xy_pos(boardPos, &pos);
+    grid_tile_calc_xy_pos(board_pos, &pos);
 
     // Set the image data associated with the grid-tile value.
-    set_sprite_tile(spriteIdx, spriteId.left);
-    set_sprite_tile(spriteIdx + 1, spriteId.right);
+    set_sprite_tile(sprite_idx, sprite_id.left);
+    set_sprite_tile(sprite_idx + 1, sprite_id.right);
     
     // TODO experiment with different sprite palettes
-    set_sprite_prop(spriteIdx, CUR_SPRITE_PALETTE);
-    set_sprite_prop(spriteIdx + 1, CUR_SPRITE_PALETTE);
+    set_sprite_prop(sprite_idx, CUR_SPRITE_PALETTE);
+    set_sprite_prop(sprite_idx + 1, CUR_SPRITE_PALETTE);
 
-    // As the "null tile" is reserved and tileIds are equivalents to powers
+    // As the "null tile" is reserved and `TileId`s are equivalents to powers
     // of two, the left sprite ID is 1 less than the tile ID.
-    move_sprite(spriteIdx, pos.x, pos.y);
-    move_sprite(spriteIdx + 1, pos.x + SPRITE_WIDTH, pos.y);
+    move_sprite(sprite_idx, pos.x, pos.y);
+    move_sprite(sprite_idx + 1, pos.x + SPRITE_WIDTH, pos.y);
 }
 
 /*
@@ -126,15 +130,15 @@ void render_grid_tile(const TileId tileId, const size_t spriteIdx, const BoardPo
 void render_board(const Board* board) {
     // For now, all sprites are associated with a fixed grid position and we
     // dynamically load the value of the sprite based on the value of the tile.
-    size_t spriteIdx = 0;
+    size_t sprite_idx = 0;
     for (size_t r=0; r<BOARD_SIZE; ++r) {
         for (size_t c=0; c<BOARD_SIZE; ++c) {
-            const TileId tileId = board->grid[r][c];
-            const BoardPosition boardPos = { .row=r, .col=c };
-            render_grid_tile(tileId, spriteIdx, &boardPos);
+            const TileId tile_id = board->grid[r][c];
+            const BoardPosition board_pos = { .row=r, .col=c };
+            render_grid_tile(tile_id, sprite_idx, &board_pos);
             // Increment by two as two half-grid-tiles are rendered per
             // iteration.
-            spriteIdx += 2;
+            sprite_idx += 2;
         }
     }
 }
