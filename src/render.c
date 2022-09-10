@@ -6,6 +6,7 @@ Description:    Rendering engine for the game.
 */
 
 #include <gb/gb.h>
+#include <gb/cgb.h>
 #include <stdio.h>
 #include <stddef.h>
 
@@ -16,6 +17,19 @@ Description:    Rendering engine for the game.
 #include "spriteset_tiles.h"
 #include "tileset_grid.h"
 #include "tilemap_grid.h"
+
+/***** Constants *****/
+
+#define CUR_SPRITE_PALETTE  2
+
+/// Default sprite palette for enhanced GBC graphics.
+uint16_t SPRITE_PALETTE[] = {
+	0, RGB_BLUE, RGB_ORANGE, RGB_PINK,
+	0, RGB_GREEN, RGB_BLUE, RGB_PURPLE,
+	0, RGB_LIGHTGRAY, RGB_DARKGRAY, RGB_BLACK,
+};
+
+/***** Functions *****/
 
 /*
 ** Initializes the game grid.
@@ -40,7 +54,8 @@ void render_init_board(const Board* board) {
 
     // Load the game sprite tiles in
     set_sprite_data(0, MAX_SPRITE_TILES, spriteset_tiles);
-
+    set_sprite_palette(0, 3, SPRITE_PALETTE);
+    
     // Render the initial sprite data
     render_board(board);
 
@@ -72,6 +87,10 @@ void render_grid_tile(const TileId tileId, const size_t spriteIdx, const BoardPo
     // Set the image data associated with the grid-tile value.
     set_sprite_tile(spriteIdx, spriteId.left);
     set_sprite_tile(spriteIdx + 1, spriteId.right);
+    
+    // TODO experiment with different sprite palettes
+    set_sprite_prop(spriteIdx, CUR_SPRITE_PALETTE);
+    set_sprite_prop(spriteIdx + 1, CUR_SPRITE_PALETTE);
 
     // As the "null tile" is reserved and tileIds are equivalents to powers
     // of two, the left sprite ID is 1 less than the tile ID.
