@@ -130,17 +130,16 @@ void render_grid_tile(
 void render_board(const Board* board) {
     /** Render the score **/
     render_window_show(false);
-    uint8_t score_buff[13] = { '\0' };
+    uint8_t score_buff[WINDOW_STR_LEN_MAX + 1] = { '\0' };
     // Hide our 00-pad score cheating
     if (board->score) {
-        // TODO These `*printf()` implementations do not appear to support
-        // fix-width number rendering.
-        sprintf(score_buff, "Score: %3d00", board->score);
+        sprintf(score_buff, "%d00", board->score);
     }
     else {
-        sprintf(score_buff, "Score:     0", board->score);
+        sprintf(score_buff, "0", board->score);
     }
     render_str_relative(REL_POS_2, REL_POS_0, score_buff);
+    render_str_relative(REL_POS_0, REL_POS_0, "Score:");
     
     /** Render the Board **/
 
