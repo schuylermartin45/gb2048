@@ -32,6 +32,7 @@ typedef struct {
     TileId grid[BOARD_SIZE][BOARD_SIZE];
 } Board;
 
+/// Directions the board can shift
 typedef enum {
     BOARD_NONE,
     BOARD_UP,
@@ -40,13 +41,23 @@ typedef enum {
     BOARD_RIGHT,
 } BoardDirection;
 
+/// Various end game scenarios.
+typedef enum {
+    ENDGAME_NONE,       // No change, continue testing
+    ENDGAME_LOSS,       // Board is full
+    ENDGAME_WIN_2048,   // The true ending
+    ENDGAME_WIN_4096,   // The point where I gave up making sprites
+} Endgame;
+
 /// Initializes a board
 void board_init(Board* board);
 
 /// Generate a new tile on the board.
 void board_generate_tile(Board* board);
-
 /// Shift a board in a direction
 void board_shift(Board* board, const BoardDirection direction);
+
+/// Check if the game is over
+Endgame board_check(const Board* board);
 
 #endif

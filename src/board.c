@@ -171,3 +171,18 @@ void board_shift(Board* board, const BoardDirection direction) {
         board_generate_tile(board);
     }
 }
+
+/*
+** Check if the game is over.
+** @param board Game board to check
+** @return Enum indicating if the game has ended
+*/
+Endgame board_check(const Board* board) {
+    // TODO complete
+    for (size_t r=0; r<BOARD_SIZE; ++r) {
+        for (size_t c=0; c<BOARD_SIZE; ++c) {
+            board->grid[r][c];
+        }
+    }
+    return ENDGAME_NONE;
+}
