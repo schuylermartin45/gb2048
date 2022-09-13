@@ -7,14 +7,17 @@ Description:    Represents the current game board.
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #include "grid_tile.h"
 
 /***** Constants *****/
 
-#define MAX_TILE_ID 12
-#define BOARD_SIZE  4
+#define TILE_ID_2048    11
+#define MAX_TILE_ID     12
+#define BOARD_SIZE      4
+#define BOUND_SIZE      (BOARD_SIZE - 1)
 
 // Macros used for board availability checks
 #define ROW_4_BIT_MASK          0xF0
@@ -28,7 +31,11 @@ typedef uint8_t Score;
 
 /// Stores data associated with the current game
 typedef struct {
+    /// Current score
     Score score;
+    /// Tracks if the game is going to 4096
+    bool reached_2048;
+    /// Gameplay grid system
     TileId grid[BOARD_SIZE][BOARD_SIZE];
 } Board;
 
@@ -58,6 +65,6 @@ void board_generate_tile(Board* board);
 void board_shift(Board* board, const BoardDirection direction);
 
 /// Check if the game is over
-Endgame board_check(const Board* board);
+Endgame board_check(Board* board);
 
 #endif

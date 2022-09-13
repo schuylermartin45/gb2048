@@ -14,6 +14,12 @@ Description:    Represents the current game board.
 
 #include "board.h"
 
+//#define TEST_EASY_WIN   1
+
+/***** Variables *****/
+
+/***** Functions *****/
+
 /*
 ** Generate a new tile on the board.
 ** @param board Board to modify
@@ -21,7 +27,11 @@ Description:    Represents the current game board.
 void board_generate_tile(Board* board) {
     // Decide if we are dropping a 2 or a 4, biased towards 2 (roughly 88% of
     // the time...Great Scott!)
-    const TileId tileId = (rand() < 225) ? 1 : 2;
+    #ifdef TEST_EASY_WIN
+        const TileId tileId = 10;
+    #else
+        const TileId tileId = (rand() < 225) ? 1 : 2;
+    #endif
 
     // Scan for all available spots, storing the row value in the upper 4 bits
     // and the column in the lower 4 bits.
@@ -52,6 +62,7 @@ void board_generate_tile(Board* board) {
 void board_init(Board* board) {
     // Initialize the board to 0
     board->score = 0;
+    board->reached_2048 = false;
     for (size_t r=0; r<BOARD_SIZE; ++r) {
         for (size_t c=0; c<BOARD_SIZE; ++c) {
             board->grid[r][c] = 0;
@@ -177,12 +188,44 @@ void board_shift(Board* board, const BoardDirection direction) {
 ** @param board Game board to check
 ** @return Enum indicating if the game has ended
 */
-Endgame board_check(const Board* board) {
-    // TODO complete
+Endgame board_check(Board* board) {
+    // The end game must be checked against all tile positions. So we check
+    // every board position for such an event. Therefore the "continue"
+    // conditions are checked at the end of checking all tiles.
+    bool keep_going = false;
     for (size_t r=0; r<BOARD_SIZE; ++r) {
         for (size_t c=0; c<BOARD_SIZE; ++c) {
-            board->grid[r][c];
+            const TileId cur_val = board->grid[r][c];
+            // Win conditions
+            if (!board->reached_2048 && cur_val == TILE_ID_2048) {
+                // This flag allows the player to keep going.
+                board->reached_2048 = true;
+                return ENDGAME_WIN_2048;
+            }
+            else if (board->reached_2048 && cur_val == MAX_TILE_ID) {
+                return ENDGAME_WIN_4096;
+            }
+            // Continue playing conditions
+            else if (cur_val == NULL_TILE_ID) {
+                keep_going = true;
+            }
+			else if ((r > 0) && (cur_val == board->grid[r-1][c])) {
+                keep_going = true;
+			}
+			else if ((r < BOUND_SIZE) && (cur_val == board->grid[r+1][c])) {
+                keep_going = true;
+			}
+			else if ((c > 0) && (cur_val == board->grid[r][c-1])) {
+                keep_going = true;
+			}
+			else if ((c < BOUND_SIZE) && (cur_val == board->grid[r][c+1])) {
+                keep_going = true;
+			}
         }
     }
-    return ENDGAME_NONE;
+    if (keep_going) {
+        return ENDGAME_NONE;
+    }
+    // If all checks fail, the game has been lost
+    return ENDGAME_LOSS;
 }

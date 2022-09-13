@@ -84,7 +84,43 @@ int main() {
 
         if (direction != BOARD_NONE) {
             board_shift(&board, direction);
+            const Endgame endgame = board_check(&board);
             render_board(&board);
+            // Allow the final board to render then draw the menu
+            if (endgame != ENDGAME_NONE) {
+                render_window_show(true);
+                switch (endgame) {
+                    case ENDGAME_WIN_2048:
+                        render_str_relative(
+                            REL_POS_1,
+                            REL_POS_1,
+                            "2048! Continue?"
+                        );
+                    break;
+                    case ENDGAME_WIN_4096:
+                        render_str_relative(
+                            REL_POS_1,
+                            REL_POS_1,
+                            "4096! Play again?"
+                        );
+                    break;
+                    case ENDGAME_LOSS:
+                        render_str_relative(
+                            REL_POS_1,
+                            REL_POS_1,
+                            "Game Over."
+                        );
+                    break;
+                }
+                wait_on_button_pressed(J_START);
+                render_window_hide();
+                // Allow the user to play again
+                if ((endgame == ENDGAME_WIN_4096) || (endgame == ENDGAME_LOSS)) {
+                    board_init(&board);
+                    render_board(&board);
+                }
+                continue;
+            }
         }
         
         wait_vbl_done();
