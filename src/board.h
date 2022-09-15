@@ -27,7 +27,7 @@ Description:    Represents the current game board.
 /***** Types *****/
 
 /// Scoring will store a small number to then display a much bigger number.
-typedef uint8_t Score;
+typedef uint16_t Score;
 
 /// Stores data associated with the current game
 typedef struct {
