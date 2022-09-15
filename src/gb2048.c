@@ -45,10 +45,12 @@ int main() {
 
     // TODO make a better splash screen
     render_window_show(false);
+    render_str_relative(REL_POS_1, REL_POS_0, "-- Gameboy 2048 --");
     render_str_relative(REL_POS_1, REL_POS_1, "Press start!");
+    render_str_relative(REL_POS_1, REL_POS_2, "Schuyler M. - 2022");
     // Wait for the start-screen, then abuse the scanline register and seed
     // with a value derived by the current scan line value.
-    wait_on_button_pressed(J_START);
+    wait_on_button_pressed(J_START | J_A);
     render_window_hide();
     const uint16_t seed = LY_REG | (uint16_t)DIV_REG << 8;
     initarand(seed);
@@ -112,7 +114,7 @@ int main() {
                         );
                     break;
                 }
-                wait_on_button_pressed(J_START);
+                wait_on_button_pressed(J_START | J_A);
                 render_window_hide();
                 // Allow the user to play again
                 if ((endgame == ENDGAME_WIN_4096) || (endgame == ENDGAME_LOSS)) {

@@ -184,7 +184,9 @@ void render_window_hide() {
         MIN_X_WND_TILE_POS,
         MIN_Y_WND_TILE_POS,
         MAX_X_WND_TILE_POS,
-        MAX_Y_WND_TILE_POS,
+        // Handle truncation error that prevents last line from being
+        // wiped.
+        MAX_Y_WND_TILE_POS + 1,
         0x00
     );
 }
