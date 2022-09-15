@@ -56,7 +56,7 @@ void render_init_font() {
 void render_init_grid() {
     // TODO need to re-map background tiles now that they are pushed
     // back.
-    set_bkg_data(font_0_len, 8, tileset_grid);
+    set_bkg_data(font_0_len, 13, tileset_grid);
     set_bkg_tiles(0, 0, tilemap_gridWidth, tilemap_gridHeight, tilemap_grid);
 
     // Render data and turn the screen on

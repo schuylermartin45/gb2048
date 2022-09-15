@@ -18,7 +18,7 @@ Description:    Rendering engine primatives and utilities. Breaks dependency cyc
 #define TILE_PAD_X      16
 #define TILE_PAD_Y      8
 // Starting position for the upper-left-most grid tile
-#define GRID_START_X    44
+#define GRID_START_X    40
 #define GRID_START_Y    48
 // Invalid sprite positions that remove sprites from the viewport
 // According to the docs, setting the Y out of bounds is preferred.

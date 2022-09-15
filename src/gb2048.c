@@ -61,7 +61,7 @@ int main() {
 
     // Initialize the game rendering
     // TODO: Fix grid current/menu tile map is crap
-    //render_init_grid();
+    render_init_grid();
     render_init_board(&board);
 
     while (true) {
