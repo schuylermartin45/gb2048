@@ -44,14 +44,13 @@ int main() {
     render_init_font();
 
     // TODO make a better splash screen
-    render_window_show(false);
     render_str_relative(REL_POS_1, REL_POS_0, "-- Gameboy 2048 --");
     render_str_relative(REL_POS_1, REL_POS_1, "Press start!");
     render_str_relative(REL_POS_1, REL_POS_2, "Schuyler M. - 2022");
     // Wait for the start-screen, then abuse the scanline register and seed
     // with a value derived by the current scan line value.
     wait_on_button_pressed(J_START | J_A);
-    render_window_hide();
+    SHOW_SPRITES;
     const uint16_t seed = LY_REG | (uint16_t)DIV_REG << 8;
     initarand(seed);
 
@@ -75,12 +74,16 @@ int main() {
         else if (buttons & J_RIGHT) direction = BOARD_RIGHT;
         else if (buttons & J_START) {
             // TODO make a better pause menu
-            render_window_show(true);
+            HIDE_SPRITES;
+            clear_bkg_data();
             render_str_relative(REL_POS_1, REL_POS_1, "Paused");
             // First wait (for any button) starts "pause mode". This second wait
             // keeps the pause menu open.
             wait_on_button_pressed(J_START);
-            render_window_hide();
+            clear_bkg_data();
+            SHOW_SPRITES;
+            render_init_grid();
+            render_board(&board);
             continue;
         }
 
@@ -90,7 +93,7 @@ int main() {
             render_board(&board);
             // Allow the final board to render then draw the menu
             if (endgame != ENDGAME_NONE) {
-                render_window_show(true);
+                HIDE_SPRITES;
                 switch (endgame) {
                     case ENDGAME_WIN_2048:
                         render_str_relative(
@@ -115,7 +118,7 @@ int main() {
                     break;
                 }
                 wait_on_button_pressed(J_START | J_A);
-                render_window_hide();
+                SHOW_SPRITES;
                 // Allow the user to play again
                 if ((endgame == ENDGAME_WIN_4096) || (endgame == ENDGAME_LOSS)) {
                     board_init(&board);

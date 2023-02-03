@@ -70,10 +70,8 @@ void render_board(const Board* board);
 
 /** Window Mode: String and Menu Rendering **/
 
-/// Shows the window layer
-void render_window_show(const bool hide_sprites);
-/// Hides and clears the window layer
-void render_window_hide();
+/// Clears the background data.
+void clear_bkg_data();
 
 /// Renders a string to an X/Y tile coordinate
 void render_str_xy(const uint8_t x, const uint8_t y, uint8_t* str);

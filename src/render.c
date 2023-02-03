@@ -129,7 +129,6 @@ void render_grid_tile(
 */
 void render_board(const Board* board) {
     /** Render the score **/
-    render_window_show(false);
     uint8_t score_buff[WINDOW_STR_LEN_MAX + 1] = { '\0' };
     // Hide our 00-pad score cheating
     if (board->score) {
@@ -161,26 +160,11 @@ void render_board(const Board* board) {
 /** Window Mode: String and Menu Rendering **/
 
 /*
-** Shows the window layer.
-** @param hide_sprites  (Optional) Optionally hide the sprite layer.
+** Clears the background data.
 */
-void render_window_show(const bool hide_sprites) {
-    SHOW_WIN;
-    // If requested, hide sprites as they intersect with the window layer.
-    if (hide_sprites) {
-        HIDE_SPRITES;
-    }
-}
-
-/* 
-** Hides and clears the window layer
-*/
-void render_window_hide() {
-    HIDE_WIN;
-    SHOW_SPRITES;
-
+void clear_bkg_data() {
     // Clear the window as to not leak visual data between rendering calls
-    fill_win_rect(
+    fill_bkg_rect(
         MIN_X_WND_TILE_POS,
         MIN_Y_WND_TILE_POS,
         MAX_X_WND_TILE_POS,
@@ -221,7 +205,7 @@ void render_str_xy(const uint8_t x, const uint8_t y, const uint8_t* str) {
     uint8_t buff[WINDOW_STR_LEN_MAX];
     const uint8_t length = _render_init_str_buff(str, buff);
 
-    set_win_tiles(x, y, length, 1, buff);
+    set_bkg_tiles(x, y, length, 1, buff);
 }
 
 /*
@@ -266,5 +250,5 @@ void render_str_relative(
             break;
     }
 
-    set_win_tiles(x, y, length, 1, buff);
+    set_bkg_tiles(x, y, length, 1, buff);
 }
