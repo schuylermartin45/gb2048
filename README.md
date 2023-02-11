@@ -1,6 +1,7 @@
 # Gameboy 2048
 
-![Gameboy 2048](./img/screenshots/04_v1_0_0_release_photo.png)
+![Gameboy 2048 in Color](./img/screenshots/05_v1_1_0_release_photo_color.png)
+![Gameboy 2048](./img/screenshots/06_v1_1_0_release_photo.png)
 
 After an incredibly irresponsible purchase at a local retro gaming store, I
 promised myself that I would finally get around to developing something that
